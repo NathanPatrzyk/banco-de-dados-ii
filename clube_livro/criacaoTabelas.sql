@@ -11,4 +11,10 @@ CREATE TABLE tbaluno (
   CONSTRAINT pk_tbaluno PRIMARY KEY(matr_aluno),
   CONSTRAINT un_rg_aluno UNIQUE(rg_aluno)
 ) ENGINE = INNODB;
+DESC tbaluno;
 
+CREATE TABLE tbarea (
+	cod_area INT NOT NULL,
+	nome_area VARCHAR(50) NOT NULL,
+	CONSTRAINT pk_tbarea PRIMARY KEY(cod_area)
+) ENGINE = INNODB;
