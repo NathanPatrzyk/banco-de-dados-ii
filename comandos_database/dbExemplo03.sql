@@ -1,0 +1,3 @@
+CREATE DATABASE dbExemplo03;
+USE dbExemplo03;
+DROP DATABASE dbExemplo03;
