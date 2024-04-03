@@ -60,3 +60,20 @@ CREATE TABLE tbemprestimo (
 	ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = INNODB;
 DESC tbemprestimo;
+
+-- Comandos para alteração da tabela ALTER
+
+-- Adiciona um novo campo na tabela
+ALTER TABLE tbaluno
+	ADD cpf_aluno VARCHAR(5);
+DESC tbaluno;
+
+-- Modifica o tipo do atributo da tabela
+ALTER TABLE tbaluno
+	MODIFY cpf_aluno CHAR(11);
+DESC tbaluno;
+
+-- Apaga um atributo da tabela
+ALTER TABLE tbaluno
+	DROP cpf_aluno;
+DESC tbaluno;
