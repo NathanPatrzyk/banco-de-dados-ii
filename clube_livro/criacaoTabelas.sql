@@ -77,3 +77,18 @@ DESC tbaluno;
 ALTER TABLE tbaluno
 	DROP cpf_aluno;
 DESC tbaluno;
+
+-- Exclui uma constraint FK
+ALTER TABLE tbaluno
+	DROP FOREIGN KEY fk_tblivro_tbaluno;
+DESC tbaluno;
+
+-- Adiciona uma constraint FK
+ALTER TABLE tbaluno
+	ADD CONSTRAINT fk_tblivro_tbaluno FOREIGN KEY (matr_aluno0)
+		REFERENCES tbaluno(matr_aluno);
+DESC tbaluno;
+
+ALTER TABLE tbaluno
+	ALTER COLUMN cidade_aluno SET DEFAULT 'Imbituva';
+DESC tbaluno;
