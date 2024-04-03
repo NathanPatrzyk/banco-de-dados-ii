@@ -10,7 +10,7 @@ CREATE TABLE tbaluno (
   cidade_aluno VARCHAR(20) DEFAULT "IRATI",
 
   CONSTRAINT pk_tbaluno PRIMARY KEY(matr_aluno),
-	
+
   CONSTRAINT un_rg_aluno UNIQUE(rg_aluno)
 ) ENGINE = INNODB;
 DESC tbaluno;
@@ -42,3 +42,21 @@ CREATE TABLE tblivro (
 ) ENGINE = INNODB;
 DESC tblivro;
 
+CREATE TABLE tbemprestimo (
+	matr_aluno INT NOT NULL,
+	isbn_livro INT NOT NULL,
+	data_emprestimo_livro DATE,
+	data_devolucao_prevista_livro DATE,
+	data_devolucao_efetiva DATE,
+
+	CONSTRAINT pk_tbemprestimo PRIMARY KEY(matr_aluno,isbn_livro),
+
+	CONSTRAINT fk_tbemprestimo_tbaluno FOREIGN KEY(matr_aluno)
+		REFERENCES tbaluno(matr_aluno),
+
+	CONSTRAINT fk_tbemprestimo_tblivro FOREIGN KEY(isbn_livro)
+		REFERENCES tblivro(isbn_livro)
+
+	ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = INNODB;
+DESC tbemprestimo;
