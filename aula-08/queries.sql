@@ -81,7 +81,8 @@ WHERE
     AND e.data_devolucao_efetiva_emprestimo IS NOT NULL;
 
 -- Listar todos os clientes que tiveram mais do que 4 empréstimos.
-SELECT tbDerivada.nome_cliente, tbDerivada.qtd_emprestimo FROM (
+SELECT tbDerivada.nome_cliente, tbDerivada.qtd_emprestimo
+FROM (
         SELECT c.nome_cliente, COUNT(e.data_emprestimo) AS "qtd_emprestimo"
         FROM tbcliente c
             INNER JOIN tbemprestimo e ON c.cod_cliente = e.cod_cliente
@@ -91,4 +92,4 @@ SELECT tbDerivada.nome_cliente, tbDerivada.qtd_emprestimo FROM (
 WHERE
     tbDerivada.qtd_emprestimo > 4;
 
--- 
+--
