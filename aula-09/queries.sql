@@ -50,11 +50,13 @@ FROM tbtitulo t
 WHERE
     c.nome_categoria NOT IN("Terror", "Suspense", "Drama");
 
--- EXISTS 1
 -- Quais os titulos que possuem o preço da classe menor que 8.00?
-SELECT t.nome_titulo AS "Nome do Título", c.preco_classe AS "Preço da Classe"
+SELECT 
+    t.nome_titulo AS "Nome do Título",
+    c.preco_classe AS "Preço da Classe"
 FROM tbtitulo t
-    INNER JOIN tbclasse c ON c.cod_classe = t.cod_classe
+    INNER JOIN tbclasse c
+    ON c.cod_classe = t.cod_classe
 WHERE
     EXISTS (
         SELECT c.cod_classe
@@ -64,7 +66,6 @@ WHERE
             AND c.preco_classe < 8
     );
 
--- EXISTS 2
 -- Quais os nomes dos filmes que possuem o nome de título Fusce?
 SELECT f.nome_filme AS "Nome do Filme"
 FROM tbfilme f
@@ -77,7 +78,6 @@ WHERE
             AND t.nome_titulo = "Fusce"
     );
 
--- NOT EXISTS 1
 -- Quais os filmes que os clientes do estado de SP NÃO emprestaram?
 SELECT f.nome_filme AS "Nome do Filme"
 FROM tbfilme f
@@ -85,13 +85,13 @@ WHERE
     NOT EXISTS (
         SELECT e.cod_filme
         FROM tbemprestimo e
-            INNER JOIN tbcliente c ON c.cod_cliente = e.cod_cliente
+            INNER JOIN tbcliente c 
+            ON c.cod_cliente = e.cod_cliente
         WHERE
             e.cod_filme = f.cod_filme
             AND c.uf_cliente = "SP"
     );
 
--- NOT EXISTS 2
 -- Quais os nomes dos clientes que NÃO realizaram nenhum empréstimo em 2018?
 SELECT c.nome_cliente AS "Nome do Cliente"
 FROM tbcliente c
@@ -101,5 +101,7 @@ WHERE
         FROM tbemprestimo e
         WHERE
             e.cod_cliente = c.cod_cliente
-            AND e.data_emprestimo BETWEEN "2018-01-01" AND "2018-12-31"
+            AND e.data_emprestimo 
+            BETWEEN "2018-01-01"
+            AND "2018-12-31"
     );
