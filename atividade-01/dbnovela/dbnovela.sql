@@ -869,7 +869,7 @@ INSERT INTO
     )
 VALUES (
         1,
-        'Misterios De Uma Vida',
+        'Misterios de uma Vida',
         '2024-01-01',
         '2024-12-31',
         '20:00:00',
@@ -2955,7 +2955,7 @@ INSERT INTO
         codigo_personagem
     )
 VALUES (5, 12),
-    (18, 22),
+    (1, 22),
     (7, 33),
     (25, 6),
     (12, 30),
@@ -2963,7 +2963,7 @@ VALUES (5, 12),
     (13, 22),
     (8, 7),
     (30, 11),
-    (16, 34),
+    (1, 34),
     (3, 15),
     (27, 39),
     (22, 2),
@@ -2971,7 +2971,7 @@ VALUES (5, 12),
     (31, 4),
     (19, 19),
     (11, 20),
-    (9, 44),
+    (1, 44),
     (26, 35),
     (33, 47),
     (28, 23),
@@ -2985,7 +2985,7 @@ VALUES (5, 12),
     (13, 14),
     (24, 21),
     (17, 45),
-    (32, 50),
+    (1, 50),
     (2, 31),
     (29, 49),
     (22, 13),
@@ -2996,7 +2996,7 @@ VALUES (5, 12),
     (26, 41),
     (39, 56),
     (4, 17),
-    (35, 38),
+    (1, 38),
     (48, 37),
     (11, 40),
     (19, 42),
@@ -3008,7 +3008,7 @@ VALUES (5, 12),
     (30, 59),
     (22, 21),
     (38, 18),
-    (25, 8),
+    (1, 8),
     (41, 30),
     (29, 60),
     (6, 7),
@@ -3023,7 +3023,7 @@ VALUES (5, 12),
     (40, 63),
     (21, 50),
     (18, 44),
-    (17, 24),
+    (1, 24),
     (7, 32),
     (15, 20),
     (45, 48),
@@ -3036,39 +3036,39 @@ VALUES (5, 12),
     (14, 28),
     (33, 37),
     (9, 16),
-    (41, 12);
+    (1, 12);
 
 -- 1. Explique e apresenta a sintaxe do LEFT OUTER JOIN, RIGHT OUTER JOIN e FULL OUTER  JOIN:
 
 -- LEFT OUTER JOIN: Este comando é utilizado para retornar todos os registros da tabela da esquerda (primeira tabela) junto com os dados correspondentes da tabela da direita (segunda tabela), os quais, caso não existam, ficam com o valor NULL.
 -- Sua sintaxe é:
-SELECT nomeDasColunas
-FROM
-    tabelaDaEsquerda
-    LEFT OUTER JOIN tabelaDaDireita ON tabelaDaEsquerda.chaveEstrangeira = tabelaDaDireita.chavePrimaria;
+--SELECT nomeDasColunas
+--FROM
+--    tabelaDaEsquerda
+--    LEFT OUTER JOIN tabelaDaDireita ON tabelaDaEsquerda.chaveEstrangeira = tabelaDaDireita.chavePrimaria;
 
 -- RIGHT OUTER JOIN: Este comando é utilizado para retornar todos os registros da tabela da direita (segunda tabela) junto com os dados correspondentes da tabela da esquerda (primeira tabela), os quais, caso não existam, ficam com o valor NULL.
 -- Sua sintaxe é:
-SELECT nomeDasColunas
-FROM
-    tabelaDaEsquerda
-    RIGHT OUTER JOIN tabelaDaDireita ON tabelaDaEsquerda.chaveEstrangeira = tabelaDaDireita.chavePrimaria;
+--SELECT nomeDasColunas
+--FROM
+--    tabelaDaEsquerda
+--    RIGHT OUTER JOIN tabelaDaDireita ON tabelaDaEsquerda.chaveEstrangeira = tabelaDaDireita.chavePrimaria;
 
 -- FULL OUTER JOIN: É a junção dos dois comandos anteriores, pois retorna todos os registros da tabela da esquerda (primeira tabela) E todos os registros da tabela da direita (segunda tabela), caso não acha alguma correspondência o campo fica com o valor NULL.
 -- Sua sintaxe é:
-(
-    SELECT nomeDasColunas
-    FROM
-        tabelaDaEsquerda
-        LEFT OUTER JOIN tabelaDaDireita ON tabelaDaEsquerda.chaveEstrangeira = tabelaDaDireita.chavePrimaria
-)
-UNION
-(
-    SELECT nomeDasColunas
-    FROM
-        tabelaDaEsquerda
-        RIGHT OUTER JOIN tabelaDaDireita ON tabelaDaEsquerda.chaveEstrangeira = tabelaDaDireita.chavePrimaria
-);
+--(
+--    SELECT nomeDasColunas
+--    FROM
+--        tabelaDaEsquerda
+--        LEFT OUTER JOIN tabelaDaDireita ON tabelaDaEsquerda.chaveEstrangeira = tabelaDaDireita.chavePrimaria
+--)
+--UNION
+--(
+--    SELECT nomeDasColunas
+--    FROM
+--        tabelaDaEsquerda
+--        RIGHT OUTER JOIN tabelaDaDireita ON tabelaDaEsquerda.chaveEstrangeira = tabelaDaDireita.chavePrimaria
+--);
 
 -- 2. Selecione o nome dos atores que não participam de nenhuma novela:
 SELECT DISTINCT
@@ -3090,25 +3090,29 @@ WHERE
     p.nome_personagem IS NULL;
 
 -- 4. Selecione o nome e a idade dos atores que participam da novela “Mistérios de uma vida” ou outra novela que esteja cadastrada em sua base de dados:
+SELECT a.nome_ator, a.idade_ator
+FROM
+    tbator a
+    INNER JOIN tbpersonagem p ON p.codigo_ator = a.codigo_ator
+    INNER JOIN tbnovelapersonagem np ON np.codigo_personagem = p.codigo_personagem
+    INNER JOIN tbnovela n ON np.codigo_novela = n.codigo_novela
+WHERE
+    n.nome_novela LIKE "Mist_rios De uma vida";
 
 -- 5. Selecione o nome de todos os atores que tiveram personagens com o nome “Anna” ou outro nome cadastrado em sua base de dados:
+SELECT a.nome_ator, p.nome_personagem
+FROM tbator a
+    INNER JOIN tbpersonagem p ON p.codigo_ator = a.codigo_ator
+WHERE
+    p.nome_personagem LIKE "Anna%";
 
 -- 6. Selecione o nome dos atores que trabalharam nas mesmas novelas que a atriz “Joaquina Penteado” ou outro nome cadastrado em sua base de dados:
-
 -- 7. Selecione o nome dos atores que NÃO trabalharam nas mesmas novelas que a atriz “Joaquina Penteado” ou outro nome cadastrado em sua base de dados:
-
 -- 8. Selecione o nome e a idade do personagem mais novo:
-
 -- 9. Selecione o nome e o salário do ator que recebe o menor salário:
-
 -- 10. Quais os nomes dos atores que nunca representaram personagens pobres nas novelas?
-
 -- 11. Selecione o nome dos atores que trabalharam em pelo menos uma novela das 18 horas:
-
 -- 12. Elabore uma consulta usando LEFT OUTER JOIN para a base de dados em questão:
-
 -- 13. Elabore uma consulta usando RIGHT OUTER JOIN para a base de dados em questão:
-
 -- 14. Elabore uma consulta usando FULL OUTER JOIN para a base de dados em questão:
-
 -- 15. Quando deve - se usar os OPERADORES ALL, SOME E EXIST.Apresente uma consulta com cada um destes operadores:
