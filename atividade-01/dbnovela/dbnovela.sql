@@ -2224,7 +2224,7 @@ CREATE TABLE tbpersonagem (
     nome_personagem VARCHAR(50) NOT NULL,
     idade_personagem INT(11) NOT NULL,
     situacao_financeira_personagem VARCHAR(20) NOT NULL,
-    codigo_ator INT(11) NOT NULL,
+    codigo_ator INT(11),
     CONSTRAINT pk_tbpersonagem PRIMARY KEY (codigo_personagem),
     CONSTRAINT fk_tbpersonagem_tbator FOREIGN KEY (codigo_ator) REFERENCES tbator (codigo_ator) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = INNODB;
@@ -2263,7 +2263,7 @@ VALUES (
         'Anna Souza',
         27,
         'Rica',
-        1
+        NULL
     ),
     (
         5,
@@ -2312,7 +2312,7 @@ VALUES (
         'Natalia Petrova',
         33,
         'Média',
-        92
+        NULL
     ),
     (
         12,
@@ -2326,7 +2326,7 @@ VALUES (
         'Chloe Wilson',
         34,
         'Rica',
-        75
+        NULL
     ),
     (
         14,
@@ -2354,7 +2354,7 @@ VALUES (
         'Yara Santos',
         29,
         'Média',
-        99
+        NULL
     ),
     (
         18,
@@ -2368,7 +2368,7 @@ VALUES (
         'Oliver Brown',
         28,
         'Rica',
-        83
+        NULL
     ),
     (
         20,
@@ -2389,7 +2389,7 @@ VALUES (
         'Lucas Silva',
         34,
         'Média',
-        54
+        NULL
     ),
     (
         23,
@@ -2410,7 +2410,7 @@ VALUES (
         'Rafael Lima',
         29,
         'Média',
-        57
+        NULL
     ),
     (
         26,
@@ -2424,7 +2424,7 @@ VALUES (
         'Sofia Oliveira',
         31,
         'Pobre',
-        69
+        NULL
     ),
     (
         28,
@@ -2445,7 +2445,7 @@ VALUES (
         'Gabriela Silva',
         32,
         'Pobre',
-        28
+        NULL
     ),
     (
         31,
@@ -2480,7 +2480,7 @@ VALUES (
         'Anna Oliveira',
         30,
         'Rica',
-        14
+        NULL
     ),
     (
         36,
@@ -2522,14 +2522,14 @@ VALUES (
         'Anna Martins',
         27,
         'Rica',
-        77
+        NULL
     ),
     (
         42,
         'Eduardo Lima',
         31,
         'Pobre',
-        61
+        NULL
     ),
     (
         43,
@@ -2606,7 +2606,7 @@ VALUES (
         'Anna Martins',
         32,
         'Rica',
-        62
+        NULL
     ),
     (
         54,
@@ -2655,7 +2655,7 @@ VALUES (
         'Marcos Pereira',
         32,
         'Pobre',
-        24
+        NULL
     ),
     (
         61,
@@ -2725,7 +2725,7 @@ VALUES (
         'Victor Silva',
         27,
         'Média',
-        94
+        NULL
     ),
     (
         71,
@@ -2823,7 +2823,7 @@ VALUES (
         'Anna Ribeiro',
         30,
         'Pobre',
-        16
+        NULL
     ),
     (
         85,
@@ -2900,7 +2900,7 @@ VALUES (
         'Anna Rocha',
         29,
         'Rica',
-        83
+        NULL
     ),
     (
         96,
@@ -2921,7 +2921,7 @@ VALUES (
         'Anna Martins',
         27,
         'Rica',
-        91
+        NULL
     ),
     (
         99,
@@ -3039,21 +3039,18 @@ VALUES (5, 12),
     (1, 12);
 
 -- 1. Explique e apresenta a sintaxe do LEFT OUTER JOIN, RIGHT OUTER JOIN e FULL OUTER  JOIN:
-
 -- LEFT OUTER JOIN: Este comando é utilizado para retornar todos os registros da tabela da esquerda (primeira tabela) junto com os dados correspondentes da tabela da direita (segunda tabela), os quais, caso não existam, ficam com o valor NULL.
 -- Sua sintaxe é:
 --SELECT nomeDasColunas
 --FROM
 --    tabelaDaEsquerda
 --    LEFT OUTER JOIN tabelaDaDireita ON tabelaDaEsquerda.chaveEstrangeira = tabelaDaDireita.chavePrimaria;
-
 -- RIGHT OUTER JOIN: Este comando é utilizado para retornar todos os registros da tabela da direita (segunda tabela) junto com os dados correspondentes da tabela da esquerda (primeira tabela), os quais, caso não existam, ficam com o valor NULL.
 -- Sua sintaxe é:
 --SELECT nomeDasColunas
 --FROM
 --    tabelaDaEsquerda
 --    RIGHT OUTER JOIN tabelaDaDireita ON tabelaDaEsquerda.chaveEstrangeira = tabelaDaDireita.chavePrimaria;
-
 -- FULL OUTER JOIN: É a junção dos dois comandos anteriores, pois retorna todos os registros da tabela da esquerda (primeira tabela) E todos os registros da tabela da direita (segunda tabela), caso não acha alguma correspondência o campo fica com o valor NULL.
 -- Sua sintaxe é:
 --(
@@ -3069,7 +3066,6 @@ VALUES (5, 12),
 --        tabelaDaEsquerda
 --        RIGHT OUTER JOIN tabelaDaDireita ON tabelaDaEsquerda.chaveEstrangeira = tabelaDaDireita.chavePrimaria
 --);
-
 -- 2. Selecione o nome dos atores que não participam de nenhuma novela:
 SELECT DISTINCT
     a.nome_ator AS "Nome do Ator"
@@ -3090,7 +3086,9 @@ WHERE
     p.nome_personagem IS NULL;
 
 -- 4. Selecione o nome e a idade dos atores que participam da novela “Mistérios de uma vida” ou outra novela que esteja cadastrada em sua base de dados:
-SELECT DISTINCT a.nome_ator AS "Nome do Ator", a.idade_ator AS "Idade do Ator"
+SELECT DISTINCT
+    a.nome_ator AS "Nome do Ator",
+    a.idade_ator AS "Idade do Ator"
 FROM
     tbator a
     INNER JOIN tbpersonagem p ON p.codigo_ator = a.codigo_ator
@@ -3100,7 +3098,8 @@ WHERE
     n.nome_novela LIKE "Mist_rios De uma vida";
 
 -- 5. Selecione o nome de todos os atores que tiveram personagens com o nome “Anna” ou outro nome cadastrado em sua base de dados:
-SELECT DISTINCT a.nome_ator AS "Nome do Ator"
+SELECT DISTINCT
+    a.nome_ator AS "Nome do Ator"
 FROM tbator a
     INNER JOIN tbpersonagem p ON p.codigo_ator = a.codigo_ator
 WHERE
@@ -3167,12 +3166,103 @@ WHERE
     );
 
 -- 10. Quais os nomes dos atores que nunca representaram personagens pobres nas novelas?
-SELECT DISTINCT a.nome_ator AS "Nome do Ator"
+SELECT a.nome_ator AS "Nome do Ator"
 FROM tbator a
-    INNER JOIN tbpersonagem p ON a.codigo_ator = p.codigo_ator WHERE p.situacao_financeira_personagem NOT IN ("Pobre");
+WHERE
+    a.codigo_ator NOT IN(
+        SELECT p.codigo_ator
+        FROM tbpersonagem p
+        WHERE
+            p.situacao_financeira_personagem = "Pobre"
+    );
 
 -- 11. Selecione o nome dos atores que trabalharam em pelo menos uma novela das 18 horas:
+SELECT DISTINCT
+    a.nome_ator AS "Nome do Ator"
+FROM
+    tbator a
+    INNER JOIN tbpersonagem p ON a.codigo_ator = p.codigo_ator
+    INNER JOIN tbnovelapersonagem np ON p.codigo_personagem = np.codigo_personagem
+WHERE
+    np.codigo_novela IN (
+        SELECT n.codigo_novela
+        FROM tbnovela n
+        WHERE
+            n.horario_exibicao_novela = "18:00:00"
+    );
+
 -- 12. Elabore uma consulta usando LEFT OUTER JOIN para a base de dados em questão:
+-- Liste os nomes das novelas e seus capítulo, incluindo as novelas que não possuem capítulo:
+SELECT n.nome_novela AS "Nome da Novela", c.nome_capitulo AS "Nome do Capítulo"
+FROM tbnovela n
+    LEFT OUTER JOIN tbcapitulo c ON n.codigo_novela = c.codigo_novela;
+
 -- 13. Elabore uma consulta usando RIGHT OUTER JOIN para a base de dados em questão:
+-- Mostre todos os nomes de novelas e os nomes de seus personagens, incluindo as novelas que não possuem personagens.
+-- Mostre os nomes dos personagens e os nomes de seus atores, incluindo os personagens que não possuem autores:
+SELECT p.nome_personagem AS "Nome do Personagem", a.nome_ator AS "Nome do Ator"
+FROM tbator a
+    RIGHT OUTER JOIN tbpersonagem p ON a.codigo_ator = p.codigo_ator;
+
 -- 14. Elabore uma consulta usando FULL OUTER JOIN para a base de dados em questão:
+-- Liste os nomes das novelas e nomes dos personagens, incluindo as novelas sem personagens e os personagens sem novelas:
+(
+    SELECT n.nome_novela AS "Nome da Novela", p.nome_personagem AS "Nome do Personagem"
+    FROM
+        tbnovela n
+        LEFT OUTER JOIN tbnovelapersonagem np ON n.codigo_novela = np.codigo_novela
+        LEFT OUTER JOIN tbpersonagem p ON p.codigo_personagem = np.codigo_personagem
+)
+UNION
+(
+    SELECT n.nome_novela AS "Nome da Novela", p.nome_personagem AS "Nome do Personagem"
+    FROM
+        tbnovela n
+        RIGHT OUTER JOIN tbnovelapersonagem np ON n.codigo_novela = np.codigo_novela
+        RIGHT OUTER JOIN tbpersonagem p ON p.codigo_personagem = np.codigo_personagem
+);
+
 -- 15. Quando deve-se usar os OPERADORES ALL, SOME E EXIST. Apresente uma consulta com cada um destes operadores:
+-- ALL:
+-- Utilizado para comparar conjuntos, retorna verdadeiro, caso todas a linhas da subconsulta satisfazerem a condição:
+-- Quais os atores brasileiros ou portugueses que recebem mais ou o mesmo que todos os atores americanos?
+SELECT a.nome_ator AS "Nome do Ator", a.salario_ator AS "Salário do Ator"
+FROM tbator a
+WHERE (
+        a.cidade_ator LIKE "%Brasil"
+        OR a.cidade_ator LIKE "%Portugal"
+    )
+    AND a.salario_ator >= ALL (
+        SELECT a.salario_ator
+        FROM tbator a
+        WHERE
+            a.cidade_ator LIKE "%Estados Unidos"
+    );
+
+-- SOME:
+-- Utilizado para comparar conjuntos, retorna verdadeiro, caso pelo menos uma das linhas da subconsulta satisfaz a condição:
+-- Quais os nomes e idades dos personagens ricos que tem idade menor que pelo menos um personagem pobre:
+SELECT p.nome_personagem AS "Nome do Personagem", p.idade_personagem AS "Idade do Personagem"
+FROM tbpersonagem p
+WHERE
+    p.situacao_financeira_personagem = "Rica"
+    AND p.idade_personagem < SOME (
+        SELECT p.idade_personagem
+        FROM tbpersonagem p
+        WHERE
+            p.situacao_financeira_personagem = "Pobre"
+    );
+
+-- EXIST:
+-- Utilizado para conferir a existência de algum registro na subconsulta, retorna verdadeiro, caso exista algum registro:
+-- Quais os nomes dos personagens que foram interpretados por atores com o nome Lucas:
+SELECT p.nome_personagem AS "Nome do Personagem"
+FROM tbpersonagem p
+WHERE
+    EXISTS (
+        SELECT a.codigo_ator
+        FROM tbator a
+        WHERE
+            a.codigo_ator = p.codigo_ator
+            AND a.nome_ator LIKE "Lucas%"
+    );
