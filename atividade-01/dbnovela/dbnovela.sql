@@ -2263,7 +2263,7 @@ VALUES (
         'Anna Souza',
         27,
         'Rica',
-        23
+        1
     ),
     (
         5,
@@ -2291,7 +2291,7 @@ VALUES (
         'Lucas Martins',
         30,
         'Pobre',
-        10
+        1
     ),
     (
         9,
@@ -2347,7 +2347,7 @@ VALUES (
         'Gabriel Hernández',
         30,
         'Rica',
-        40
+        1
     ),
     (
         17,
@@ -2403,7 +2403,7 @@ VALUES (
         'Daniela Costa',
         30,
         'Pobre',
-        3
+        1
     ),
     (
         25,
@@ -2508,7 +2508,7 @@ VALUES (
         'Thiago Pereira',
         32,
         'Pobre',
-        88
+        1
     ),
     (
         40,
@@ -2641,7 +2641,7 @@ VALUES (
         'Larissa Costa',
         27,
         'Média',
-        79
+        1
     ),
     (
         59,
@@ -2718,7 +2718,7 @@ VALUES (
         'Ana Freitas',
         30,
         'Pobre',
-        63
+        1
     ),
     (
         70,
@@ -2830,7 +2830,7 @@ VALUES (
         'Patrícia Almeida',
         27,
         'Média',
-        71
+        1
     ),
     (
         86,
@@ -2928,7 +2928,7 @@ VALUES (
         'Juliana Pereira',
         28,
         'Pobre',
-        14
+        1
     ),
     (
         100,
@@ -3072,7 +3072,7 @@ VALUES (5, 12),
 
 -- 2. Selecione o nome dos atores que não participam de nenhuma novela:
 SELECT DISTINCT
-    a.nome_ator
+    a.nome_ator AS "Nome do Ator"
 FROM
     tbator a
     LEFT OUTER JOIN tbpersonagem p ON p.codigo_ator = a.codigo_ator
@@ -3083,14 +3083,14 @@ WHERE
 
 -- 3. Selecione os atores que não possuem personagens:
 SELECT DISTINCT
-    a.nome_ator
+    a.nome_ator AS "Nome do Ator"
 FROM tbator a
     LEFT OUTER JOIN tbpersonagem p ON p.codigo_ator = a.codigo_ator
 WHERE
     p.nome_personagem IS NULL;
 
 -- 4. Selecione o nome e a idade dos atores que participam da novela “Mistérios de uma vida” ou outra novela que esteja cadastrada em sua base de dados:
-SELECT a.nome_ator, a.idade_ator
+SELECT DISTINCT a.nome_ator AS "Nome do Ator", a.idade_ator AS "Idade do Ator"
 FROM
     tbator a
     INNER JOIN tbpersonagem p ON p.codigo_ator = a.codigo_ator
@@ -3100,19 +3100,79 @@ WHERE
     n.nome_novela LIKE "Mist_rios De uma vida";
 
 -- 5. Selecione o nome de todos os atores que tiveram personagens com o nome “Anna” ou outro nome cadastrado em sua base de dados:
-SELECT a.nome_ator, p.nome_personagem
+SELECT DISTINCT a.nome_ator AS "Nome do Ator"
 FROM tbator a
     INNER JOIN tbpersonagem p ON p.codigo_ator = a.codigo_ator
 WHERE
     p.nome_personagem LIKE "Anna%";
 
 -- 6. Selecione o nome dos atores que trabalharam nas mesmas novelas que a atriz “Joaquina Penteado” ou outro nome cadastrado em sua base de dados:
+SELECT DISTINCT
+    a.nome_ator AS "Nome do Ator"
+FROM
+    tbator a
+    INNER JOIN tbpersonagem p ON p.codigo_ator = a.codigo_ator
+    INNER JOIN tbnovelapersonagem np ON np.codigo_personagem = p.codigo_personagem
+    INNER JOIN tbnovela n ON np.codigo_novela = n.codigo_novela
+WHERE
+    n.nome_novela IN (
+        SELECT n.nome_novela
+        FROM
+            tbnovela n
+            INNER JOIN tbnovelapersonagem np ON np.codigo_novela = n.codigo_novela
+            INNER JOIN tbpersonagem p ON p.codigo_personagem = np.codigo_personagem
+            INNER JOIN tbator a ON a.codigo_ator = p.codigo_ator
+        WHERE
+            a.nome_ator = "Joaquina Penteado"
+    )
+    AND a.nome_ator != "Joaquina Penteado";
+
 -- 7. Selecione o nome dos atores que NÃO trabalharam nas mesmas novelas que a atriz “Joaquina Penteado” ou outro nome cadastrado em sua base de dados:
+SELECT DISTINCT
+    a.nome_ator AS "Nome do Ator"
+FROM
+    tbator a
+    INNER JOIN tbpersonagem p ON p.codigo_ator = a.codigo_ator
+    INNER JOIN tbnovelapersonagem np ON np.codigo_personagem = p.codigo_personagem
+    INNER JOIN tbnovela n ON np.codigo_novela = n.codigo_novela
+WHERE
+    n.nome_novela NOT IN(
+        SELECT n.nome_novela
+        FROM
+            tbnovela n
+            INNER JOIN tbnovelapersonagem np ON np.codigo_novela = n.codigo_novela
+            INNER JOIN tbpersonagem p ON p.codigo_personagem = np.codigo_personagem
+            INNER JOIN tbator a ON a.codigo_ator = p.codigo_ator
+        WHERE
+            a.nome_ator = "Joaquina Penteado"
+    )
+    AND a.nome_ator != "Joaquina Penteado";
+
 -- 8. Selecione o nome e a idade do personagem mais novo:
+SELECT p.nome_personagem AS "Nome do Personagem", p.idade_personagem AS "Idade do Personagem"
+FROM tbpersonagem p
+WHERE
+    p.idade_personagem = (
+        SELECT MIN(p.idade_personagem)
+        FROM tbpersonagem p
+    );
+
 -- 9. Selecione o nome e o salário do ator que recebe o menor salário:
+SELECT a.nome_ator AS "Nome do Ator", a.salario_ator AS "Salário do Ator"
+FROM tbator a
+WHERE
+    a.salario_ator = (
+        SELECT MIN(a.salario_ator)
+        FROM tbator a
+    );
+
 -- 10. Quais os nomes dos atores que nunca representaram personagens pobres nas novelas?
+SELECT DISTINCT a.nome_ator AS "Nome do Ator"
+FROM tbator a
+    INNER JOIN tbpersonagem p ON a.codigo_ator = p.codigo_ator WHERE p.situacao_financeira_personagem NOT IN ("Pobre");
+
 -- 11. Selecione o nome dos atores que trabalharam em pelo menos uma novela das 18 horas:
 -- 12. Elabore uma consulta usando LEFT OUTER JOIN para a base de dados em questão:
 -- 13. Elabore uma consulta usando RIGHT OUTER JOIN para a base de dados em questão:
 -- 14. Elabore uma consulta usando FULL OUTER JOIN para a base de dados em questão:
--- 15. Quando deve - se usar os OPERADORES ALL, SOME E EXIST.Apresente uma consulta com cada um destes operadores:
+-- 15. Quando deve-se usar os OPERADORES ALL, SOME E EXIST. Apresente uma consulta com cada um destes operadores:
